@@ -29,6 +29,7 @@ create table employee(
     id bigserial not null primary key, 
     fullname varchar(255) not null,
     type_id bigint references employee_type(id),
+    is_teacher boolean not null,
     section_id bigint references section(id)
 )
 
