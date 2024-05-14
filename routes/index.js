@@ -7,5 +7,6 @@ router.use('/section', require('./section'))
 router.use('/employeeType', require('./employeeType'))
 router.use('/employee', require('./employee'))
 router.use('/admin', require('./admin'))
+router.use('/auth', require('./auth'))
 
 module.exports = router

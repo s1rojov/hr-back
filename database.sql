@@ -4,6 +4,8 @@ create table organization(
     shortname varchar(255)
 )
 
+
+-- facultet
 create table part(
     id bigserial not null primary key, 
     fullname varchar(255) not null, 
@@ -11,7 +13,9 @@ create table part(
     org_id bigint references organization(id)
 )
 
-create table section(
+
+-- kafedra
+create table section( 
     id bigserial not null primary key, 
     fullname varchar(255) not null, 
     shortname varchar(255)
