@@ -2,8 +2,8 @@ const { Router } = require("express");
 const router = Router();
 
 router.use('/organization', require('./organization'))
-router.use('/part', require('./part'))
-router.use('/section', require('./section'))
+router.use('/faculty', require('./faculty'))
+router.use('/directory', require('./directory'))
 router.use('/employeeType', require('./employeeType'))
 router.use('/employee', require('./employee'))
 router.use('/admin', require('./admin'))

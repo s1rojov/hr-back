@@ -49,7 +49,7 @@ router.put('/:id', async (req, res) => {
     }
 })
 
-//delete section
+//delete directory
 router.delete('/:id', async (req, res) => {
     try {
         await pool.query('delete from admin where id= $1', [req.params.id])

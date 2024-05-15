@@ -16,10 +16,10 @@ router.get('/', async(req, res)=>{
 //add type
 router.post('/', async (req, res) => {
     try {
-        const { id, name, count, section_id } = req.body
+        const { id, name, count, directory_id } = req.body
         const newType = await pool.query(
-            `insert into employee_type (id, name, count, section_id) values ($1, $2, $3, $4) returning *`,
-            [id, name, count, section_id]
+            `insert into employee_type (id, name, count, directory_id) values ($1, $2, $3, $4) returning *`,
+            [id, name, count, directory_id]
         );
         res.status(201).json(newType.rows);
     } catch (error) {
@@ -31,14 +31,14 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
     try {
         const { id } = req.params
-        const { name, count, section_id } = req.body
+        const { name, count, directory_id } = req.body
         const typeById = await pool.query('SELECT * FROM employee_type WHERE id = $1', [id]);
         const updatedType = await pool.query(
-            `update employee_type set name = $1, count = $2, section_id = $3 where id = $4 returning *`,
+            `update employee_type set name = $1, count = $2, directory_id = $3 where id = $4 returning *`,
             [
                 name || typeById.rows[0].name,
                 count || typeById.rows[0].count,
-                section_id || typeById.rows[0].section_id,
+                directory_id || typeById.rows[0].directory_id,
                 id
             ]
         );

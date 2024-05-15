@@ -6,35 +6,38 @@ create table organization(
 
 
 -- facultet
-create table part(
+create table faculty(
     id bigserial not null primary key, 
     fullname varchar(255) not null, 
-    shortname varchar(255)
+    shortname varchar(255),
     org_id bigint references organization(id)
 )
 
 
 -- kafedra
-create table section( 
+create table directory( 
     id bigserial not null primary key, 
     fullname varchar(255) not null, 
-    shortname varchar(255)
-    part_id bigint references part(id)
+    shortname varchar(255),
+    faculty_id bigint references faculty(id)
 )
 
 create table employee_type(
     id bigserial not null primary key, 
     name varchar(255) not null,
     count integer not null,
-    section_id bigint references section(id)
+    directory_id bigint references directory(id)
 )
+
+--ozgaryapti db dan yangilash kk
 
 create table employee(
     id bigserial not null primary key, 
     fullname varchar(255) not null,
     type_id bigint references employee_type(id),
     is_teacher boolean not null,
-    section_id bigint references section(id)
+    is_leadership boolean not null,
+    directory_id bigint references directory(id)
 )
 
 create table admin(
