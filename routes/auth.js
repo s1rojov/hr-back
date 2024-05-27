@@ -8,8 +8,8 @@ const router = Router();
 
 router.post('/', async(req, res)=>{
     try {
-        const { login, password, org_id } = req.body
-        const isAdmin = await pool.query('SELECT * FROM admin WHERE login = $1 AND password = $2 AND org_id = $3', [login, password, org_id]);
+        const { login, password } = req.body
+        const isAdmin = await pool.query('SELECT * FROM admin WHERE login = $1 AND password = $2', [login, password]);
         if(isAdmin.rows.length !=0){
             const data = {
                 admin:isAdmin.rows[0],

@@ -1,50 +1,67 @@
-create table organization(
-    id bigserial not null primary key, 
-    fullname varchar(255) not null, 
-    shortname varchar(255),
-    description text
+create table leadership(
+    id bigserial primary key,
+    fullname varchar(255) not null,
+    phone varchar(255) not null,
+    position varchar(255) not null,
+    address varchar(255) not null,
+    birthday date not null,
+    pass_information varchar(255) not null
+    experience text 
+    updated_at TIMESTAMP DEFAULT NOW()
+    created_at TIMESTAMP DEFAULT NOW()
 )
 
 
--- facultet
-create table faculty(
-    id bigserial not null primary key, 
+-- bo'linma == kafedra
+create table division(
+    id bigserial primary key, 
     fullname varchar(255) not null, 
     shortname varchar(255),
-    org_id bigint references organization(id)
 )
 
 
 -- kafedra
-create table directory( 
-    id bigserial not null primary key, 
+create table kafedra( 
+    id bigserial primary key, 
     fullname varchar(255) not null, 
     shortname varchar(255),
-    faculty_id bigint references faculty(id)
+    division_id bigint references division(id)
+)
+
+create table department(
+    id bigserial primary key, 
+    fullname varchar(255) not null, 
+    shortname varchar(255),
 )
 
 create table employee_type(
-    id bigserial not null primary key, 
+    id bigserial primary key, 
     name varchar(255) not null,
     count integer not null,
-    directory_id bigint references directory(id)
+    kafedra_id bigint references kafedra(id),
+    department_id bigint references department(id),
 )
 
---ozgaryapti db dan yangilash kk
-
 create table employee(
-    id bigserial not null primary key, 
+    id bigserial primary null,
     fullname varchar(255) not null,
-    type_id bigint references employee_type(id),
-    is_teacher boolean not null,
-    is_leadership boolean not null,
-    directory_id bigint references directory(id)
+    phone varchar(255) not null,
+    position varchar(255) not null,
+    address varchar(255) not null,
+    birthday date not null,
+    pass_information varchar(255) not null
+    experience text 
+    kafedra_id bigint references kafedra(id),
+    department_id bigint references department(id),
+    employee_type_id bigint references employee_type(id),
+    shtat varchar(255) not null
+    updated_at TIMESTAMP DEFAULT NOW()
+    created_at TIMESTAMP DEFAULT NOW()
 )
 
 create table admin(
-    id bigserial not null primary key, 
+    id bigserial primary key, 
     fullname varchar(255) not null,
     login varchar(50) not null,
     password varchar(50) not null,
-    org_id bigint references organization(id)
 )

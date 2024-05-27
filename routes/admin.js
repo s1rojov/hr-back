@@ -16,10 +16,10 @@ router.get('/', async(req, res)=>{
 //add admin
 router.post('/', async (req, res) => {
     try {
-        const { id, fullname, login, password, org_id } = req.body
+        const { id, fullname, login, password } = req.body
         const newAdmin = await pool.query(
-            `insert into admin (id, fullname, login, password, org_id) values ($1, $2, $3, $4, $5) returning *`,
-            [id,fullname, login, password, org_id]
+            `insert into admin (id, fullname, login, password) values ($1, $2, $3, $4) returning *`,
+            [id,fullname, login, password]
         );
         res.status(201).json(newAdmin.rows);
     } catch (error) {
@@ -31,15 +31,14 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
     try {
         const { id } = req.params
-        const { fullname, login, password, org_id } = req.body
+        const { fullname, login, password } = req.body
         const adminById = await pool.query('SELECT * FROM admin WHERE id = $1', [id]);
         const updatedAdmin = await pool.query(
-            `update admin set fullname = $1, login = $2, password = $3, org_id = $4 where id = $5 returning *`,
+            `update admin set fullname = $1, login = $2, password = $3 where id = $4 returning *`,
             [
                 fullname || adminById.rows[0].fullname,
                 login || adminById.rows[0].login,
                 password || adminById.rows[0].password,
-                org_id || adminById.rows[0].org_id,
                 id
             ]
         );
