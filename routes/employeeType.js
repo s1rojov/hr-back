@@ -2,7 +2,7 @@ const { Router } = require("express");
 const pool = require("../config/db");
 const router = Router();
 
-//get all types
+//get all
 
 router.get('/', async(req, res)=>{
     try {
@@ -16,10 +16,10 @@ router.get('/', async(req, res)=>{
 //add type
 router.post('/', async (req, res) => {
     try {
-        const { id, name, count, directory_id } = req.body
+        const { name, count, kafedra_id, department_id } = req.body
         const newType = await pool.query(
-            `insert into employee_type (id, name, count, directory_id) values ($1, $2, $3, $4) returning *`,
-            [id, name, count, directory_id]
+            `insert into employee_type (name, count, kafedra_id,department_id ) values ($1, $2, $3, $4) returning *`,
+            [name, count, kafedra_id,department_id ]
         );
         res.status(201).json(newType.rows);
     } catch (error) {
@@ -27,18 +27,19 @@ router.post('/', async (req, res) => {
     }
 })
 
-//update type
+// //update type
 router.put('/:id', async (req, res) => {
     try {
         const { id } = req.params
-        const { name, count, directory_id } = req.body
+        const { name, count, kafedra_id, department_id } = req.body
         const typeById = await pool.query('SELECT * FROM employee_type WHERE id = $1', [id]);
         const updatedType = await pool.query(
-            `update employee_type set name = $1, count = $2, directory_id = $3 where id = $4 returning *`,
+            `update employee_type set name = $1, count = $2, kafedra_id = $3, department_id = $4  where id = $5 returning *`,
             [
                 name || typeById.rows[0].name,
                 count || typeById.rows[0].count,
-                directory_id || typeById.rows[0].directory_id,
+                kafedra_id || typeById.rows[0].kafedra_id,
+                department_id || typeById.rows[0].department_id,
                 id
             ]
         );
@@ -48,7 +49,7 @@ router.put('/:id', async (req, res) => {
     }
 })
 
-//delete type
+// //delete type
 router.delete('/:id', async (req, res) => {
     try {
         await pool.query('delete from employee_type where id= $1', [req.params.id])

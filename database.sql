@@ -5,9 +5,9 @@ create table leadership(
     position varchar(255) not null,
     address varchar(255) not null,
     birthday date not null,
-    pass_information varchar(255) not null
-    experience text 
-    updated_at TIMESTAMP DEFAULT NOW()
+    pass_information varchar(255) not null,
+    experience text,
+    updated_at TIMESTAMP DEFAULT NOW(),
     created_at TIMESTAMP DEFAULT NOW()
 )
 
@@ -20,7 +20,7 @@ create table division(
 )
 
 
--- kafedra
+-- kafedra  sasasassaa
 create table kafedra( 
     id bigserial primary key, 
     fullname varchar(255) not null, 
@@ -31,7 +31,7 @@ create table kafedra(
 create table department(
     id bigserial primary key, 
     fullname varchar(255) not null, 
-    shortname varchar(255),
+    shortname varchar(255)
 )
 
 create table employee_type(
@@ -40,22 +40,22 @@ create table employee_type(
     count integer not null,
     kafedra_id bigint references kafedra(id),
     department_id bigint references department(id),
-)
+)   
 
 create table employee(
-    id bigserial primary null,
+    id bigserial primary key,
     fullname varchar(255) not null,
     phone varchar(255) not null,
-    position varchar(255) not null,
     address varchar(255) not null,
     birthday date not null,
-    pass_information varchar(255) not null
-    experience text 
+    pass_information varchar(255) not null,
+    experience text,
     kafedra_id bigint references kafedra(id),
     department_id bigint references department(id),
     employee_type_id bigint references employee_type(id),
-    shtat varchar(255) not null
-    updated_at TIMESTAMP DEFAULT NOW()
+    shtat varchar(255) not null,
+    unique_code varchar(255) not null,
+    updated_at TIMESTAMP DEFAULT NOW(),
     created_at TIMESTAMP DEFAULT NOW()
 )
 
