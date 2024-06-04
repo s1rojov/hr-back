@@ -18,7 +18,6 @@ router.post('/', async(req, res)=>{
             res.status(200).send(data)
         }
         else{
-            
             const data = {
                 admin:isAdmin.rows[0],
                 access: false

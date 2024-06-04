@@ -16,10 +16,10 @@ router.get('/', async(req, res)=>{
 //add admin
 router.post('/', async (req, res) => {
     try {
-        const { id, fullname, login, password } = req.body
+        const { fullname, login, password } = req.body
         const newAdmin = await pool.query(
-            `insert into admin (id, fullname, login, password) values ($1, $2, $3, $4) returning *`,
-            [id,fullname, login, password]
+            `insert into admin (fullname, login, password) values ($1, $2, $3) returning *`,
+            [fullname, login, password]
         );
         res.status(201).json(newAdmin.rows);
     } catch (error) {
