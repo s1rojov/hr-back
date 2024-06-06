@@ -6,7 +6,7 @@ const router = Router();
 
 router.get('/', async (req, res) => {
     try {
-        const kafedra = await pool.query('SELECT k.id, k.fullname AS fullname, k.shortname AS shortname, d.fullname AS division FROM  kafedra k JOIN division d ON k.division_id = d.id;')
+        const kafedra = await pool.query('SELECT k.id, k.fullname AS fullname, k.shortname AS shortname, d.fullname AS division, d.id AS division_id FROM  kafedra k JOIN division d ON k.division_id = d.id;')
         res.status(200).send(kafedra.rows)
     } catch (error) {
         res.status(500).json({ message: error.message })
