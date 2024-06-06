@@ -48,6 +48,17 @@ router.put('/:id', async (req, res) => {
     }
 })
 
+//get by id
+router.get('/:id', async(req, res)=>{
+    try {
+        const { id } = req.params
+        const division = await pool.query('SELECT * FROM division WHERE id = $1', [id]);
+        res.status(200).json(division.rows[0])
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
+
 //delete faculty
 router.delete('/:id', async (req, res) => {
     try {

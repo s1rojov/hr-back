@@ -12,7 +12,7 @@ create table leadership(
 )
 
 
--- bo'linma == kafedra
+-- bo'linma
 create table division(
     id bigserial primary key, 
     fullname varchar(255) not null, 
@@ -20,7 +20,7 @@ create table division(
 )
 
 
--- kafedra  sasasassaa
+-- kafedra 
 create table kafedra( 
     id bigserial primary key, 
     fullname varchar(255) not null, 
