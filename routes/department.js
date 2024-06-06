@@ -14,6 +14,18 @@ router.get('/', async (req, res) => {
     }
 })
 
+
+//get by id
+router.get('/:id', async(req, res)=>{
+    try {
+        const { id } = req.params
+        const department = await pool.query('SELECT * FROM department WHERE id = $1', [id]);
+        res.status(200).json(department.rows[0])
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
+
 //add
 router.post('/', async (req, res) => {
     try {

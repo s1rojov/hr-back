@@ -27,6 +27,28 @@ router.post('/', async (req, res) => {
     }
 })
 
+//get division list
+
+router.get('/divisionList', async(req, res) =>{
+    try {
+        const divisionList = await pool.query('SELECT id AS value, fullname AS label FROM division;')
+        res.status(200).send(divisionList.rows)
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
+
+//get by id
+router.get('/:id', async(req, res)=>{
+    try {
+        const { id } = req.params
+        const kafedra = await pool.query('SELECT * FROM kafedra WHERE id = $1', [id]);
+        res.status(200).json(kafedra.rows[0])
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
+
 //update directory
 router.put('/:id', async (req, res) => {
     try {
