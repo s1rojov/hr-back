@@ -6,28 +6,68 @@ const router = Router();
 
 // get access system
 
-router.post('/', async(req, res)=>{
+router.post('/', async (req, res) => {
     try {
         const { login, password } = req.body
-        const isAdmin = await pool.query('SELECT * FROM admin WHERE login = $1 AND password = $2', [login, password]);
-        if(isAdmin.rows.length !=0){
-            const data = {
-                admin:isAdmin.rows[0],
-                access: true
-            }
-            res.status(200).send(data)
+        let employee = ''
+        let hr = ''
+        let data = {
+            user: '',
+            employee: false,
+            hr: false,
+            access: false
         }
-        else{
-            const data = {
-                admin:isAdmin.rows[0],
-                access: false
+        if (login == '') {
+            employee = await pool.query('select * from employee where unique_code = $1', [password])
+            if (employee.rows.length != 0) {
+                data.user = employee.rows[0];
+                data.employee = true
+                data.access = true
+                res.status(200).send(data)
             }
-            res.status(404).send(data)
+            else {
+                res.status(404).send(data)
+            }
+        } else {
+            hr = await pool.query('SELECT * FROM admin WHERE login = $1 AND password = $2', [login, password]);
+            if (hr.rows.length != 0) {
+                data.user = hr.rows[0];
+                data.hr = true
+                data.access = true
+                res.status(200).send(data)
+            }
+            else {
+                res.status(404).send(data)
+            }
         }
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
 })
+
+// router.post('/employee', async (req, res) => {
+//     try {
+//         const { unique_code } = req.body
+//         const isEmployee = await pool.query('select * from employee where unique_code = $1', [unique_code])
+//         if (isEmployee.rows.length != 0) {
+//             const data = {
+//                 user: isEmployee.rows[0],
+//                 employee: true
+//             }
+//             res.status(200).send(data)
+//         }
+//         else {
+//             const data = {
+//                 user: isEmployee.rows[0],
+//                 employee: false
+//             }
+//             res.status(404).send(data)
+//         }
+//     } catch (error) {
+//         res.status(500).json({ message: error.message })
+//     }
+
+// })
 
 
 

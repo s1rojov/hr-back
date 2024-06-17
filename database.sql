@@ -50,8 +50,6 @@ create table employee(
     birthday date not null,
     pass_information varchar(255) not null,
     experience text,
-    kafedra_id bigint references kafedra(id),
-    department_id bigint references department(id),
     employee_type_id bigint references employee_type(id),
     shtat varchar(255) not null,
     unique_code varchar(255) not null,
