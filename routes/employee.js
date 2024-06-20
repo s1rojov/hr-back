@@ -17,6 +17,7 @@ router.get('/', async (req, res) => {
     e.birthday, 
     e.pass_information, 
     e.experience, 
+    e.is_head,
     e.shtat, 
     e.unique_code, 
     e.created_at, 
@@ -36,10 +37,7 @@ LEFT JOIN
 LEFT JOIN 
     division div ON k.division_id = div.id
 ORDER BY 
-    e.id;
-
-            
-            `)
+    e.id; `)
         res.status(200).json(employees.rows)
     } catch (error) {
         res.status(500).json({ message: error.message })
@@ -66,10 +64,10 @@ router.get('/positionList', async (req, res) => {
 //add
 router.post('/', async (req, res) => {
     try {
-        const { fullname, phone, address, birthday, pass_information, experience, employee_type_id, shtat, unique_code } = req.body
+        const { fullname, phone, address, birthday, pass_information, experience, employee_type_id, shtat, unique_code, is_head } = req.body
         const newEmployee = await pool.query(
-            `insert into employee (fullname,phone, address, birthday, pass_information, experience, employee_type_id, shtat, unique_code ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9) returning *`,
-            [fullname, phone, address, birthday, pass_information, experience, employee_type_id, shtat, unique_code]
+            `insert into employee (fullname,phone, address, birthday, pass_information, experience, employee_type_id, shtat, unique_code, is_head ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) returning *`,
+            [fullname, phone, address, birthday, pass_information, experience, employee_type_id, shtat, unique_code, is_head]
         );
         res.status(201).json(newEmployee.rows[0]);
     } catch (error) {
@@ -88,14 +86,59 @@ router.get('/:id', async(req, res)=>{
     }
 })
 
+
+router.get('/get/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const division = await pool.query(`
+            SELECT 
+                e.id, 
+                e.fullname, 
+                e.phone, 
+                e.address, 
+                e.is_head,
+                e.birthday, 
+                e.pass_information, 
+                e.experience, 
+                e.shtat, 
+                e.unique_code, 
+                e.created_at, 
+                e.updated_at, 
+                et.name AS position, 
+                d.fullname AS department, 
+                k.fullname AS kafedra, 
+                div.fullname AS division
+            FROM 
+                employee e
+            LEFT JOIN 
+                employee_type et ON e.employee_type_id = et.id
+            LEFT JOIN 
+                kafedra k ON et.kafedra_id = k.id
+            LEFT JOIN 
+                department d ON et.department_id = d.id
+            LEFT JOIN 
+                division div ON k.division_id = div.id
+            WHERE 
+                e.id = $1
+            ORDER BY 
+                e.id
+            `, [id]);
+        res.status(200).json(division.rows[0]);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+
+
 // //update
 router.put('/:id', async (req, res) => {
     try {
         const { id } = req.params
-        const { fullname, phone, address, birthday, pass_information, experience, employee_type_id, shtat, unique_code } = req.body
+        const { fullname, phone, address, birthday, pass_information, experience, employee_type_id, shtat, unique_code, is_head } = req.body
         const employeeById = await pool.query('SELECT * FROM employee WHERE id = $1', [id]);
         const updatedEmployee = await pool.query(
-            `update employee set fullname =$1, phone =$2, address=$3, birthday =$4, pass_information =$5, experience =$6, employee_type_id=$7, shtat=$8, unique_code =$9 where id = $10 returning *`,
+            `update employee set fullname =$1, phone =$2, address=$3, birthday =$4, pass_information =$5, experience =$6, employee_type_id=$7, shtat=$8, unique_code =$9, is_head= $10 where id = $11 returning *`,
             [
                 fullname || employeeById.rows[0].fullname,
                 phone || employeeById.rows[0].phone,
@@ -106,6 +149,7 @@ router.put('/:id', async (req, res) => {
                 employee_type_id || employeeById.rows[0].employee_type_id,
                 shtat || employeeById.rows[0].shtat,
                 unique_code || employeeById.rows[0].unique_code,
+                is_head || employeeById.rows[0].is_head,
                 id
             ]
         );

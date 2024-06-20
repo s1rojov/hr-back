@@ -11,6 +11,21 @@ create table leadership(
     created_at TIMESTAMP DEFAULT NOW()
 )
 
+-- create table department_head(
+--     id bigserial primary key,
+--     fullname varchar(255) not null,
+--     phone varchar(255) not null,
+--     address varchar(255) not null,
+--     birthday date not null,
+--     pass_information varchar(255) not null,
+--     experience text,
+--     kafedra_id bigint references kafedra(id),
+--     department_id bigint references department(id),
+--     unique_code varchar(255) not null,
+--     updated_at TIMESTAMP DEFAULT NOW(),
+--     created_at TIMESTAMP DEFAULT NOW()
+-- )
+
 
 -- bo'linma
 create table division(

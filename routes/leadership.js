@@ -12,6 +12,17 @@ router.get('/', async (req, res) => {
     }
 })
 
+// getLeadershipList
+
+router.get('/getList', async(req, res)=>{
+    try {
+        const leadershipList = await pool.query('SELECT id AS value, fullname AS label, position FROM leadership;')
+        res.status(200).send(leadershipList.rows)
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
+
 //get by id
 router.get('/:id', async(req, res)=>{
     try {
