@@ -68,9 +68,24 @@ create table employee(
     employee_type_id bigint references employee_type(id),
     shtat varchar(255) not null,
     unique_code varchar(255) not null,
+    is_head varchar not null,
     updated_at TIMESTAMP DEFAULT NOW(),
     created_at TIMESTAMP DEFAULT NOW()
 )
+
+create table application(
+    id bigserial primary key, 
+    leader_id bigint references leadership(i),
+    head_id bigint references employee(id)
+    dateOn date not null,
+    dateEnd date,
+    agree_head boolean default false,
+    agree_leader boolean default false,
+    agree_hr boolean default false
+    updated_at TIMESTAMP DEFAULT NOW(),
+    created_at TIMESTAMP DEFAULT NOW()
+)
+
 
 create table admin(
     id bigserial primary key, 

@@ -3,6 +3,14 @@ const pool = require("../config/db");
 const router = Router();
 
 
+router.get('/getList', async(req, res)=>{
+    try {
+        const kafedraList = await pool.query('select id as value, fullname as label from employee where is_head = true')
+        res.status(200).send(kafedraList.rows)
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+});
 
 //get all 
 router.get('/', async (req, res) => {

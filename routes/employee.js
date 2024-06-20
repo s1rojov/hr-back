@@ -76,7 +76,7 @@ router.post('/', async (req, res) => {
 })
 
 // get by id
-router.get('/:id', async(req, res)=>{
+router.get('/:id', async (req, res) => {
     try {
         const { id } = req.params
         const division = await pool.query('SELECT * FROM employee WHERE id = $1', [id]);
@@ -168,7 +168,7 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json({ message: error.message })
     }
 
-})
+});
 
 
 module.exports = router
