@@ -11,6 +11,7 @@ router.use('/application', require('./application'))
 router.use('/admin', require('./admin'))
 router.use('/employeeType', require('./employeeType'))
 router.use('/employee', require('./employee'))
+router.use('/dashboard', require('./dashboard'))
 router.use('/auth', require('./auth'))
 
 module.exports = router

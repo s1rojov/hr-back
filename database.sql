@@ -7,24 +7,10 @@ create table leadership(
     birthday date not null,
     pass_information varchar(255) not null,
     experience text,
+    unique_code varchar,
     updated_at TIMESTAMP DEFAULT NOW(),
     created_at TIMESTAMP DEFAULT NOW()
 )
-
--- create table department_head(
---     id bigserial primary key,
---     fullname varchar(255) not null,
---     phone varchar(255) not null,
---     address varchar(255) not null,
---     birthday date not null,
---     pass_information varchar(255) not null,
---     experience text,
---     kafedra_id bigint references kafedra(id),
---     department_id bigint references department(id),
---     unique_code varchar(255) not null,
---     updated_at TIMESTAMP DEFAULT NOW(),
---     created_at TIMESTAMP DEFAULT NOW()
--- )
 
 
 -- bo'linma
@@ -76,12 +62,13 @@ create table employee(
 create table application(
     id bigserial primary key, 
     leader_id bigint references leadership(i),
-    head_id bigint references employee(id)
+    head_id bigint references employee(id) defaut 0,
     dateOn date not null,
     dateEnd date,
     agree_head boolean default false,
     agree_leader boolean default false,
     agree_hr boolean default false
+    app_type varchar,
     updated_at TIMESTAMP DEFAULT NOW(),
     created_at TIMESTAMP DEFAULT NOW()
 )

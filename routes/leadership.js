@@ -37,10 +37,10 @@ router.get('/:id', async(req, res)=>{
 // // add new
 router.post('/', async (req, res) => {
     try {
-        const {fullname, phone, position, address, birthday, pass_information, experience} = req.body
+        const {fullname, phone, position, address, birthday, pass_information, experience, unique_code} = req.body
         const newLeader = await pool.query(
-            `insert into leadership (fullname, phone, position, address, birthday, pass_information, experience) values ($1, $2, $3, $4, $5, $6, $7) returning *`,
-            [fullname, phone, position, address, birthday, pass_information, experience]
+            `insert into leadership (fullname, phone, position, address, birthday, pass_information, experience, unique_code) values ($1, $2, $3, $4, $5, $6, $7, $8) returning *`,
+            [fullname, phone, position, address, birthday, pass_information, experience, unique_code]
         );
         res.status(201).json(newLeader.rows);
     } catch (error) {
@@ -52,10 +52,10 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
     try {
         const { id } = req.params
-        const { fullname, phone, position, address, birthday, pass_information, experience } = req.body
+        const { fullname, phone, position, address, birthday, pass_information, experience, unique_code } = req.body
         const leaderById = await pool.query('SELECT * FROM leadership WHERE id = $1', [id]);
         const updatedOrg = await pool.query(
-            `update leadership set fullname = $1, phone = $2, position = $3, address = $4, birthday = $5, pass_information = $6, experience = $7 where id =$8 returning *`,
+            `update leadership set fullname = $1, phone = $2, position = $3, address = $4, birthday = $5, pass_information = $6, experience = $7 unique_code =$8 where id =$9 returning *`,
             [
                 fullname || leaderById.rows[0].fullname,
                 phone || leaderById.rows[0].phone,
@@ -64,6 +64,7 @@ router.put('/:id', async (req, res) => {
                 birthday || leaderById.rows[0].birthday,
                 pass_information || leaderById.rows[0].pass_information,
                 experience || leaderById.rows[0].experience,
+                unique_code || leaderById.rows[0].unique_code,
                 id
             ]
         );
@@ -83,6 +84,7 @@ router.delete('/:id', async (req, res) => {
     }
 
 })
+
 
 
 

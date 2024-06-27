@@ -45,6 +45,32 @@ router.post('/', async (req, res) => {
     }
 })
 
+
+router.post('/leadership', async (req, res) => {
+    try {
+        const { unique_code } = req.body;
+        let data = {
+            user: '',
+            employee: false,
+            hr: false,
+            access: false
+        };
+        const leader = await pool.query('SELECT * FROM leadership WHERE unique_code = $1', [unique_code]);
+        if (leader.rows.length !== 0) {
+            data.user = leader.rows[0];
+            data.employee = true;
+            data.access = true;
+            res.status(200).send(data);
+        } else {
+            res.status(404).send({ message: "Ma'lumot topilmadi" });
+        }
+        // res.status(200).json(leader.rows);
+    } catch (error) {
+        res.status(500).json({ message: 'An error occurred while fetching leadership data', error: error.message });
+    }
+});
+
+
 // router.post('/employee', async (req, res) => {
 //     try {
 //         const { unique_code } = req.body
